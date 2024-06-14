@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual de Máquinas</title>
+</head>
+<body>
+    <h1>Manual de Máquinas</h1>
+
+    <% manualMaqs.forEach(setor => { %>
+        <h2><%= setor.nome %></h2>
+
+        <% setor.maquinas.forEach(maquina => { %>
+            <h3><%= maquina.nome %></h3>
+
+            <% maquina.categorias.forEach(categoria => { %>
+                <h4><%= categoria.nome %></h4>
+
+                <ul>
+                    <% categoria.problemas.forEach(problema => { %>
+                        <li><%= problema.descricao %></li>
+                    <% }); %>
+                </ul>
+            <% }); %>
+        <% }); %>
+    <% }); %>
+</body>
+</html>
