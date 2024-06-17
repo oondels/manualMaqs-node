@@ -8,21 +8,30 @@
 <body>
     <h1>Manual de Máquinas</h1>
 
-    <form action="/manualmaquinas" method="get">
-        <input type="text" id="searchQuery" placeholder="Pesquise umá máquina ou defeito." name="q">
-        <input type="submit" value="Enviar">
-    </form>
+    <input type="text" id="searchQuery" placeholder="Pesquise umá máquina ou defeito." name="q">
+
     <label for="opcoes-setores">Selecione um Setor</label>
     <select name="opcoes-setores" id="opcoes-setores">
-        <option value="Montagem">Montagem</option>
         <% if (manualMaqs && manualMaqs.length > 0) { %>
             <% manualMaqs.forEach (setor => { %>
                 <option value="<%= setor.nome %>"><%= setor.nome %></option>
             <% }) %>
         <% } %>
     </select>
+    <label for="opcoes-maquinas">Selecione uma Máquina</label>
+    <select name="opcoes-maquinas" id="opcoes-maquinas">
+        <% if (manualMaqs && manualMaqs.length > 0) { %>
+            <% manualMaqs.forEach (setor => { %>
+                <% if (setor.Maquinas && setor.Maquinas.length > 0) {%>
+                    <% setor.Maquinas.forEach(maquina => { %>
+                        <option value="<%= maquina.nome %>"><%= maquina.nome %></option>
+                    <% }) %>
+                <% } %>
+            <% }) %>
+        <% } %>
+    </select>
+
     <div class="results">
-        
         <% if (manualMaqs && manualMaqs.length > 0) { %>
                 <% manualMaqs.forEach (setor => { %>
                     <div class="resultRow">
@@ -39,7 +48,7 @@
                                                 <% if (categoria.Problemas && categoria.Problemas.length > 0) { %>
                                                     <ul>
                                                         <% categoria.Problemas.forEach(problema => { %>
-                                                            <li class="resultaRow">
+                                                            <li class="resultRow">
                                                                 <%= problema.descricao %>
                                                             </li>
                                                         <% }) %>
@@ -63,8 +72,15 @@
             Sem maquinas cadastradas no Sistema
         <% } %>
     </div>
+
     <script>
-        
+        const pesquisa = document.getElementById("searchQuery")
+        pesquisa.addEventListener("input", function(e) {
+            const valorPesquisado = e.target.value
+            console.log(valorPesquisado)
+        })
+
+        const results = document.getElementsByClassName("resultRow")
     </script>
 </body>
 </html>
