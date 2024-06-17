@@ -28,6 +28,29 @@ app.get("/manualmaquinas", async (req, res) => {
   }
 });
 
+app.get("/api/manual_maqs", async (req, res) => {
+  try {
+    const manualMaqs = await Setor.findAll({
+      include: [
+        {
+          model: Maquina,
+          include: [
+            {
+              model: Categoria,
+              include: [Problema],
+            },
+          ],
+        },
+      ],
+    });
+
+    res.json(manualMaqs);
+  } catch (error) {
+    console.error("Erro ao buscar os dados:", error);
+    res.status(500).send("Erro ao buscar dados!");
+  }
+});
+
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
