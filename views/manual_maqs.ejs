@@ -8,7 +8,21 @@
 <body>
     <h1>Manual de Máquinas</h1>
 
+    <form action="/manualmaquinas" method="get">
+        <input type="text" id="searchQuery" placeholder="Pesquise umá máquina ou defeito." name="q">
+        <input type="submit" value="Enviar">
+    </form>
+    <label for="opcoes-setores">Selecione um Setor</label>
+    <select name="opcoes-setores" id="opcoes-setores">
+        <option value="Montagem">Montagem</option>
+        <% if (manualMaqs && manualMaqs.length > 0) { %>
+            <% manualMaqs.forEach (setor => { %>
+                <option value="<%= setor.nome %>"><%= setor.nome %></option>
+            <% }) %>
+        <% } %>
+    </select>
     <div class="results">
+        
         <% if (manualMaqs && manualMaqs.length > 0) { %>
                 <% manualMaqs.forEach (setor => { %>
                     <div class="resultRow">
@@ -49,5 +63,8 @@
             Sem maquinas cadastradas no Sistema
         <% } %>
     </div>
+    <script>
+        
+    </script>
 </body>
 </html>

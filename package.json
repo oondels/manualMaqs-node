@@ -10,7 +10,11 @@
   "license": "ISC",
   "dependencies": {
     "ejs": "^3.1.10",
+    "elven": "^0.0.2",
     "express": "^4.19.2",
+    "js-levenshtein": "^1.1.6",
+    "leven": "^4.0.0",
+    "levenary": "^1.1.1",
     "nodemon": "^3.1.3",
     "sequelize": "^6.37.3",
     "sequelize-cli": "^6.6.2",
