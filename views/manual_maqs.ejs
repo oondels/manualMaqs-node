@@ -8,22 +8,46 @@
 <body>
     <h1>Manual de Máquinas</h1>
 
-    <% manualMaqs.forEach(setor => { %>
-        <h2><%= setor.nome %></h2>
-
-        <% setor.maquinas.forEach(maquina => { %>
-            <h3><%= maquina.nome %></h3>
-
-            <% maquina.categorias.forEach(categoria => { %>
-                <h4><%= categoria.nome %></h4>
-
-                <ul>
-                    <% categoria.problemas.forEach(problema => { %>
-                        <li><%= problema.descricao %></li>
-                    <% }); %>
-                </ul>
-            <% }); %>
-        <% }); %>
-    <% }); %>
+    <div class="results">
+        <% if (manualMaqs && manualMaqs.length > 0) { %>
+                <% manualMaqs.forEach (setor => { %>
+                    <div class="resultRow">
+                        <h1><%= setor.nome %></h1>
+                        
+                        <% if (setor.Maquinas && setor.Maquinas.length > 0) { %>
+                            <% setor.Maquinas.forEach (maquina => { %>
+                                <div class="resultRow">
+                                    <h2><%= maquina.nome %></h2>
+                                    <% if (maquina.Categoria && maquina.Categoria.length >0 ) { %>
+                                        <% maquina.Categoria.forEach (categoria => { %>
+                                            <div class="resultRow">
+                                                <h3><%= categoria.nome %></h3>
+                                                <% if (categoria.Problemas && categoria.Problemas.length > 0) { %>
+                                                    <ul>
+                                                        <% categoria.Problemas.forEach(problema => { %>
+                                                            <li class="resultaRow">
+                                                                <%= problema.descricao %>
+                                                            </li>
+                                                        <% }) %>
+                                                    </ul>
+                                                <% } else { %>
+                                                    Sem problemas Cadastrados no Sistema
+                                                <% } %>
+                                            </div>
+                                        <% }); %>
+                                    <% } else { %>
+                                        Sem Defeitos Cadastrados no Sistema
+                                    <% } %>
+                                </div>
+                            <% }); %>
+                        <% } else { %>
+                            Sem Maquinas cadastradas no Sistema
+                        <% } %>
+                    </div>
+                <% }) %>
+        <% } else { %>
+            Sem maquinas cadastradas no Sistema
+        <% } %>
+    </div>
 </body>
 </html>
