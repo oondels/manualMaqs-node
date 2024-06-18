@@ -5,201 +5,204 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manual de Máquinas</title>
     <style>
-        .expandable-list {
-            list-style-type: none;
-            padding: 0;
-        }
-        .expandable-list li {
-            margin: 5px 0;
-        }
-        .nested {
-            display: none;
-            list-style-type: none;
-            padding-left: 20px;
-        }
         .toggle-button {
             cursor: pointer;
             color: blue;
         }
+
+        .hidden {
+            display: none;
+        }   
+
+        #opcoes-setores {
+            width: 300px;
+        }
+        
+        #opcoes-maquinas {
+            width: 300px
+        }
     </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css" rel="stylesheet" />
 </head>
 <body>
     <h1>Manual de Máquinas</h1>
-
-    <input type="text" id="searchQuery" placeholder="Pesquise umá máquina ou defeito." name="q">
-
     <label for="opcoes-setores">Selecione um Setor</label>
     <select name="opcoes-setores" id="opcoes-setores">
         <option value=""></option>
-        <% if (manualMaqs && manualMaqs.length > 0) { %>
-            <% manualMaqs.forEach (setor => { %>
-                <option value="<%= setor.nome %>"><%= setor.nome %></option>
-            <% }) %>
-        <% } %>
     </select>
+
     <label for="opcoes-maquinas">Selecione uma Máquina</label>
     <select name="opcoes-maquinas" id="opcoes-maquinas">
         <option value=""></option>
-        <% if (manualMaqs && manualMaqs.length > 0) { %>
-            <% manualMaqs.forEach (setor => { %>
-                <% if (setor.Maquinas && setor.Maquinas.length > 0) {%>
-                    <% setor.Maquinas.forEach(maquina => { %>
-                        <option value="<%= maquina.nome %>"><%= maquina.nome %></option>
-                    <% }) %>
-                <% } %>
-            <% }) %>
-        <% } %>
     </select>
 
     <div class="results">
-        <% if (manualMaqs && manualMaqs.length > 0) { %>
-                <% manualMaqs.forEach (setor => { %>
-                    <div class="resultRow">
-                            <h1><%= setor.nome %></h1>
-                        
-                        <% if (setor.Maquinas && setor.Maquinas.length > 0) { %>
-                            <% setor.Maquinas.forEach (maquina => { %>
-                                <div class="resultRow">
-                                    <span class="toggle-button"><h2><%= maquina.nome %></h2></span>
-                                    
-                                    <ul class="nested">
-                                        <li>
-                                            <% if (maquina.Categoria && maquina.Categoria.length >0 ) { %>
-                                                <% maquina.Categoria.forEach (categoria => { %>
-                                                    <div class="resultRow">
-                                                        <span class="toggle-button"><h3><%= categoria.nome %></h3></span>
-                                                        <% if (categoria.Problemas && categoria.Problemas.length > 0) { %>
-                                                            <ul class="nested">
-                                                                <% categoria.Problemas.forEach(problema => { %>
-                                                                    <li class="resultRow">
-                                                                        <%= problema.descricao %>
-                                                                    </li>
-                                                                <% }) %>
-                                                            </ul>
-                                                        <% } else { %>
-                                                            Sem problemas Cadastrados no Sistema
-                                                        <% } %>
-                                                    </div>
-                                                <% }); %>
-                                            <% } else { %>
-                                                Sem Defeitos Cadastrados no Sistema
-                                            <% } %>
-                                        </li>
-                                    </ul>
-                                </div>
-                            <% }); %>
-                        <% } else { %>
-                            Sem Maquinas cadastradas no Sistema
-                        <% } %>
-                    </div>
-                <% }) %>
-        <% } else { %>
-            Sem maquinas cadastradas no Sistema
-        <% } %>
+      
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
     <script>
         async function manualMaqs() {
             try {
                 const response = await fetch('/api/manual_maqs'); // Endpoint para obter os dados
                 const manualMaqs = await response.json(); // Convertendo a resposta para JSON
-    
-                // Função para atualizar a exibição conforme as seleções nas listas suspensas
-                function updateDisplay() {
+                
+                // Criando Lista Suspensa de Setores
+                const selecaoSetor = document.getElementById("opcoes-setores");
+                manualMaqs.forEach(setor => {
+                    const opcaoSetor = document.createElement("option");
+                    opcaoSetor.value = setor.nome;
+                    opcaoSetor.text = setor.nome;
+                    selecaoSetor.appendChild(opcaoSetor);
+                });
+
+                // Inicializando Select2 após adicionar opções
+                $('#opcoes-setores').select2({
+                    placeholder: "Pesquisar setor",
+                    allowClear: true
+                });
+
+                $('#opcoes-maquinas').select2({
+                    placeholder: "Pesquisar Máquina",
+                    allowClear: true
+                });
+
+                // Função para atualizar a lista de máquinas com base no setor selecionado
+                function updateMaquinas() {
+                    
                     const setorSelecionado = document.getElementById('opcoes-setores').value;
-                    const maquinaSelecionada = document.getElementById('opcoes-maquinas').value;
-    
-                    const resultadosContainer = document.querySelector('.results');
-                    resultadosContainer.innerHTML = ''; // Limpar resultados anteriores
-    
+                    const selecaoMaquina = document.getElementById("opcoes-maquinas");
+                    selecaoMaquina.innerHTML = '<option value=""></option>'; // Limpar opções anteriores e adicionar uma opção vazia
+
                     manualMaqs.forEach(setor => {
                         if (setor.nome === setorSelecionado) {
-                            const setorElement = document.createElement('div');
-                            setorElement.classList.add('resultRow');
-                            setorElement.innerHTML = `<h1>${setor.nome}</h1>`;
-    
-                            if (setor.Maquinas && setor.Maquinas.length > 0) {
-                                setor.Maquinas.forEach(maquina => {
-                                    
-                                        const maquinaElement = document.createElement('div');
-                                        maquinaElement.classList.add('resultRow');
-                                        maquinaElement.innerHTML = `<h2>${maquina.nome}</h2>`;
-    
-                                        if (maquina.Categoria && maquina.Categoria.length > 0) {
-                                            maquina.Categoria.forEach(categoria => {
-                                                const categoriaElement = document.createElement('div');
-                                                categoriaElement.classList.add('resultRow');
-                                                categoriaElement.innerHTML = `<h3>${categoria.nome}</h3>`;
-    
-                                                const problemasList = document.createElement('ul');
-                                                if (categoria.Problemas && categoria.Problemas.length > 0) {
-                                                    categoria.Problemas.forEach(problema => {
-                                                        const problemaElement = document.createElement('li');
-                                                        problemaElement.classList.add('resultRow');
-                                                        problemaElement.textContent = problema.descricao;
-                                                        problemasList.appendChild(problemaElement);
-                                                    });
-                                                } else {
-                                                    const semProblemasElement = document.createElement('p');
-                                                    semProblemasElement.textContent = 'Sem problemas cadastrados';
-                                                    problemasList.appendChild(semProblemasElement);
-                                                }
-    
-                                                categoriaElement.appendChild(problemasList);
-                                                maquinaElement.appendChild(categoriaElement);
-                                            });
-                                        } else {
-                                            const semCategoriasElement = document.createElement('p');
-                                            semCategoriasElement.textContent = 'Sem categorias cadastradas';
-                                            maquinaElement.appendChild(semCategoriasElement);
-                                        }
-    
-                                        setorElement.appendChild(maquinaElement);
-                                    
-                                });
-                            } else {
-                                const semMaquinasElement = document.createElement('p');
-                                semMaquinasElement.textContent = 'Sem máquinas cadastradas';
-                                setorElement.appendChild(semMaquinasElement);
-                            }
-    
-                            resultadosContainer.appendChild(setorElement);
+                            setor.Maquinas.forEach(maquina => {
+                                const opcaoMaquina = document.createElement("option");
+                                opcaoMaquina.value = maquina.nome;
+                                opcaoMaquina.text = maquina.nome;
+                                selecaoMaquina.appendChild(opcaoMaquina);
+                            });
                         }
                     });
+
+                    // Re-inicializando Select2 após atualizar opções
+                    $('#opcoes-maquinas').select2({
+                        placeholder: "Pesquisar Máquina",
+                        allowClear: true
+                    });
                 }
-    
-                // Event listeners para os eventos de mudança nas listas suspensas
-                const opcoesSetores = document.getElementById('opcoes-setores');
-                const opcoesMaquinas = document.getElementById('opcoes-maquinas');
-    
-                opcoesSetores.addEventListener('change', updateDisplay);
-                opcoesMaquinas.addEventListener('change', updateDisplay);
-    
-               
-    
+                
+                // Função para atualizar a exibição dos dados
+                function updateDisplay() {
+                    const setorSelecionado = $('#opcoes-setores').val();
+                    const maquinaSelecionada = $('#opcoes-maquinas').val();
+                    const resultadosContainer = document.querySelector('.results');
+                    resultadosContainer.innerHTML = ''; // Limpar resultados anteriores
+
+                    if (manualMaqs && manualMaqs.length > 0) {
+                        manualMaqs.forEach(setor => {
+                            // Filtrar setores pelo setor selecionado
+                            if (setorSelecionado && setor.nome !== setorSelecionado) {
+                                return;
+                            }
+
+                            const setorElement = document.createElement("div");
+                            setorElement.classList.add("setores-list")
+                            setorElement.innerHTML = `<h1>${setor.nome}</h1>`;
+
+                            if (setor.Maquinas && setor.Maquinas.length > 0) {
+                                setor.Maquinas.forEach(maquina => {
+                                    // Filtrar máquinas pela máquina selecionada
+                                    if (maquinaSelecionada && maquina.nome !== maquinaSelecionada) {
+                                        return;
+                                    }
+
+                                    const maquinaElement = document.createElement("div");
+                                    maquinaElement.classList.add("maquinas-list")
+                                    
+                                    maquinaElement.innerHTML = `<h2 class="toggle-button">${maquina.nome}</h2>`;
+
+                                    const categoriasElement = document.createElement("div")
+                                    categoriasElement.classList.add("categorias-list")
+                                    categoriasElement.classList.add("hidden")
+                                    if (maquina.Categoria && maquina.Categoria.length > 0) {
+                                        maquina.Categoria.forEach(categoria => {
+                                            const categoriaElement = document.createElement("div");
+                                            categoriaElement.classList.add("categoria")
+                                            categoriaElement.innerHTML = `<h3 class="toggle-button">${categoria.nome}</h3>`;
+
+                                            if (categoria.Problemas && categoria.Problemas.length > 0) {
+                                                const problemasList = document.createElement("ul");
+                                                problemasList.classList.add("hidden")
+                                                problemasList.classList.add("problemas-list")
+                                                categoria.Problemas.forEach(problema => {
+                                                    const problemaElement = document.createElement("li");
+                                                    problemaElement.classList.add("problema-item")
+                                                    problemaElement.textContent = problema.descricao;
+                                                    problemasList.appendChild(problemaElement);
+                                                });
+                                                categoriaElement.appendChild(problemasList);
+                                            } else {
+                                                const noProblemas = document.createElement("p");
+                                                noProblemas.textContent = "Sem problemas cadastrados no sistema";
+                                                categoriaElement.appendChild(noProblemas);
+                                            }
+                                            categoriasElement.appendChild(categoriaElement)
+                                            maquinaElement.appendChild(categoriasElement);
+                                        });
+                                    } else {
+                                        const noCategorias = document.createElement("p");
+                                        noCategorias.textContent = "Sem categorias cadastradas no sistema";
+                                        maquinaElement.appendChild(noCategorias);
+                                    }
+
+                                    setorElement.appendChild(maquinaElement);
+                                });
+                            } else {
+                                const noMaquinas = document.createElement("p");
+                                noMaquinas.textContent = "Sem máquinas cadastradas no sistema";
+                                setorElement.appendChild(noMaquinas);
+                            }
+
+                            resultadosContainer.appendChild(setorElement);
+                        });
+                    } else {
+                        const noSetores = document.createElement("p");
+                        noSetores.textContent = "Sem setores cadastrados no sistema";
+                        resultadosContainer.appendChild(noSetores);
+                    }
+                    toggleButtons()
+                }
+
+                function toggleButtons() {
+                    const toggleButtons = document.querySelectorAll(".toggle-button");
+
+                    toggleButtons.forEach(button => {
+                        button.addEventListener("click", function() {
+                            const content = this.nextElementSibling;
+                            content.classList.toggle("hidden");
+                        });
+                    });
+                }
+
+                // Adicionar o evento onchange às listas suspensas
+                $('#opcoes-setores').on('change', () => {
+                    updateMaquinas();
+                    updateDisplay();
+                });
+
+                $('#opcoes-maquinas').on('change', updateDisplay);
+
+                updateDisplay()
             } catch (error) {
                 console.error('Erro ao carregar dados:', error);
             }
         }
-    
-        // Executar a função quando a janela for carregada
-        window.onload = manualMaqs;
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var toggles = document.querySelectorAll('.toggle-button');
 
-            toggles.forEach(function(toggle) {
-                toggle.addEventListener('click', function() {
-                    var nestedList = this.nextElementSibling;
-                    if (nestedList.style.display === 'block') {
-                        nestedList.style.display = 'none';
-                    } else {
-                        nestedList.style.display = 'block';
-                    }
-                });
-            });
-        });
+        // Executar a função quando a janela for carregada
+        window.onload = manualMaqs;         
+        
     </script>
     
 </body>
