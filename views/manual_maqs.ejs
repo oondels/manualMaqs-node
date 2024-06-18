@@ -9,20 +9,34 @@
     <script src="/js/main.js"></script>
 </head>
 <body>
-    <h1>Manual de Máquinas</h1>
-    <label for="opcoes-setores">Selecione um Setor</label>
-    <select name="opcoes-setores" id="opcoes-setores">
-        <option value=""></option>
-    </select>
+    <div class="container">
+        <div class="wrapper">
+            <div class="title">
+                <h1>Manual de Máquinas</h1>
+            </div>
 
-    <label for="opcoes-maquinas">Selecione uma Máquina</label>
-    <select name="opcoes-maquinas" id="opcoes-maquinas">
-        <option value=""></option>
-    </select>
+            <div class="selecoes">
+                <div class="lista-selecao">
+                    <label for="opcoes-setores">Selecione um Setor</label>
+                    <select name="opcoes-setores" id="opcoes-setores">
+                        <option value=""></option>
+                    </select>
+                </div>
 
-    <div class="results">
+                <div class="lista-selecao">
+                    <label for="opcoes-maquinas">Selecione uma Máquina</label>
+                    <select name="opcoes-maquinas" id="opcoes-maquinas">
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+
+            <main>
+                <div class="results">
+                </div>
+            </main>
+        </div>
     </div>
-    
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script> 
 </body>

@@ -7,10 +7,6 @@ const app = express();
 
 app.use(express.static(path.join(__dirname, "static")));
 
-app.get("/manualmaquinas", async (req, res) => {
-  res.render("manual_maqs");
-});
-
 app.get("/api/manual_maqs", async (req, res) => {
   try {
     const manualMaqs = await Setor.findAll({
@@ -32,6 +28,18 @@ app.get("/api/manual_maqs", async (req, res) => {
     console.error("Erro ao buscar os dados:", error);
     res.status(500).send("Erro ao buscar dados!");
   }
+});
+
+app.get("/manualmaquinas", async (req, res) => {
+  res.render("manual_maqs");
+});
+
+app.get("/cadastro-maquinas", (req, res) => {
+  res.render("cadastro_maquinas");
+});
+
+app.get("/login", (req, res) => {
+  res.render("login");
 });
 
 app.set("views", path.join(__dirname, "views"));
