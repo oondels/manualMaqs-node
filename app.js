@@ -7,6 +7,11 @@ const app = express();
 
 app.use(express.static(path.join(__dirname, "static")));
 
+app.get("/tables", async (req, res) => {
+  const [results] = await sequelize.query("SELECT name FROM sqlite_master WHERE type='table'")
+  res.json(results)
+})
+
 app.get("/api/manual_maqs", async (req, res) => {
   try {
     const manualMaqs = await Setor.findAll({
