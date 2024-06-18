@@ -6,26 +6,7 @@ const { Setor, Maquina, Categoria, Problema } = require("./models");
 const app = express();
 
 app.get("/manualmaquinas", async (req, res) => {
-  try {
-    const manualMaqs = await Setor.findAll({
-      include: [
-        {
-          model: Maquina,
-          include: [
-            {
-              model: Categoria,
-              include: [Problema],
-            },
-          ],
-        },
-      ],
-    });
-
-    res.render("manual_maqs", { manualMaqs });
-  } catch (error) {
-    console.error("Erro ao buscar os dados:", error);
-    res.status(500).send("Erro ao buscar dados!");
-  }
+  res.render("manual_maqs");
 });
 
 app.get("/api/manual_maqs", async (req, res) => {
