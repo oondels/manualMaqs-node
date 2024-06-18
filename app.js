@@ -5,6 +5,8 @@ const { Setor, Maquina, Categoria, Problema } = require("./models");
 
 const app = express();
 
+app.use(express.static(path.join(__dirname, "static")));
+
 app.get("/manualmaquinas", async (req, res) => {
   res.render("manual_maqs");
 });
