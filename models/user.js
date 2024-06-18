@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize");
 const sequelize = require("../sequelize");
 
 const User = sequelize.define("User", {
-  usuario: {
+  user: {
     type: DataTypes.STRING,
     allowNull: false,
     unique: true,
@@ -11,7 +11,7 @@ const User = sequelize.define("User", {
     type: DataTypes.STRING,
     allowNull: false,
     unique: false,
-  },
+  }
 });
 
-module.exports = Setor;
+module.exports = User;
