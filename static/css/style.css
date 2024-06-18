@@ -1,0 +1,16 @@
+.toggle-button {
+    cursor: pointer;
+    color: blue;
+}
+
+.hidden {
+    display: none;
+}   
+
+#opcoes-setores {
+    width: 300px;
+}
+
+#opcoes-maquinas {
+    width: 300px
+}
