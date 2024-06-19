@@ -4,11 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Máquinas</title>
+    <style>
+        .defeito-container {
+          margin-bottom: 20px;
+          border: 1px solid #ccc;
+          padding: 10px;
+          border-radius: 5px;
+        }
+        .defeito-container input {
+          display: block;
+          margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
-    <form action="/cadastro-maquinas" method="POST">
+    <form action="/enviar-cadastro" method="POST" id="defeitosForm">
         <label for="setor">Escolha um setor</label>
-        <input list="setores" name="setor" id="setor">
+        <input list="setores" name="setor" id="input-setor">
         <datalist id="setores">
           <option value="Montagem">
           <option value="Costura">
@@ -22,14 +34,16 @@
         <label for="maquina">Nome da Máquina</label>
         <input type="text" name="maquina" id="input-maquina">
 
-        <label for="defeitos">Defeitos</label>
-        <textarea name="defeitos" id="input-defeitos"></textarea>
-        <label for="solucoes">Soluções</label>
-        <textarea name="solucoes" id="input-solucoes"></textarea>
+        <div id="defeitosList">
+        </div>
+
         <label for="checklist">Checklist</label>
-        <textarea name="checklist" id="input-checklist"></textarea>
+        <textarea name="checklist" id="inputChecklist"></textarea>
+        <button type="button" onclick="adicionarDefeito()">+ Adicionar Defeito</button>
 
         <input type="submit">
     </form>
+
+    <script src="/js/manualMaq.js"></script>
 </body>
 </html>
