@@ -59,37 +59,48 @@ app.post("/enviar-cadastro", (req, res) => {
       await sequelize.authenticate();
       console.log("Conexão com o Banco de Dados estabelecida com Sucesso!");
 
-      const setor = await Setor.create({
-        nome: setorNome,
-      });
+      const fidSetorId = async (nome) => {
+        const setor = await Setor.findOne({ where: { nome } })
+        return setor ? setor.id : null;
+      }
 
-      const maquina = await Maquina.create({
-        nome: maquinaNome,
-        setorId: setor.id,
-      });
+      for (setorNome in newManual) {
+        const setorId = await fidSetorId(setorNome)
+        console.log(setorId)
 
-      for (const categoriaNome in defeitosNome) {
-        const categoria = await Categoria.create({
-          nome: categoriaNome,
-          maquinaId: maquina.id,
-        });
-        for (const solucaoNome in solucoesNome) {
-          await Problema.create({
-            descricao: solucaoNome,
-            categoriaId: categoria.id,
-          });
+        const maquinas = newManual[setorNome]
+        for (maquinaNome in maquinas) {
+          const maquina = await Maquina.create({
+            nome: maquinaNome,
+            setorId: setorId
+          })
+
+          const categorias = maquinas[maquinaNome]
+          for (const categoriaNome in categorias) {
+            const categoria = await Categoria.create({
+              nome: categoriaNome,
+              maquinaId: maquina.id
+            })
+
+            const problemas = categorias[categoriaNome]
+            for (const problemaNome of problemas) {
+              await Problema.create({
+                descricao: problemaNome,
+                categoriaId: categoria.id
+              })
+            }
+          }
         }
       }
+
+      console.log("Dados adicionados com sucesso!")
     } catch (error) {
       console.error("Erro ao cadastrar os dados:", error);
     }
   };
+  cadastroMaq()
 
   res.json(newManual);
-});
-
-app.get("/login", (req, res) => {
-  res.render("login");
 });
 
 app.listen(3000, () => {
