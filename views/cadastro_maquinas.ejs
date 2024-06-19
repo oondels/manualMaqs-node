@@ -6,8 +6,30 @@
     <title>Cadastro de Máquinas</title>
 </head>
 <body>
-    <form action="POST">
-        <label for=""></label>
+    <form action="/cadastro-maquinas" method="POST">
+        <label for="setor">Escolha um setor</label>
+        <input list="setores" name="setor" id="setor">
+        <datalist id="setores">
+          <option value="Montagem">
+          <option value="Costura">
+          <option value="Apoio">
+          <option value="Corte Automático">
+          <option value="Serigrafia">
+          <option value="Lavagem">
+          <option value="Pré Solado">
+        </datalist>
+
+        <label for="maquina">Nome da Máquina</label>
+        <input type="text" name="maquina" id="input-maquina">
+
+        <label for="defeitos">Defeitos</label>
+        <textarea name="defeitos" id="input-defeitos"></textarea>
+        <label for="solucoes">Soluções</label>
+        <textarea name="solucoes" id="input-solucoes"></textarea>
+        <label for="checklist">Checklist</label>
+        <textarea name="checklist" id="input-checklist"></textarea>
+
+        <input type="submit">
     </form>
 </body>
 </html>
