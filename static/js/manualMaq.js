@@ -4,6 +4,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
   function adicionarDefeito() {
     contadorDefeitos++;
 
+    // Configuração da adição de novos forumlários ao clique do usuário
+
     const defeitoContainer = document.createElement("div");
     defeitoContainer.className = "defeito-container";
     defeitoContainer.id = `defeito-${contadorDefeitos}`;
@@ -32,6 +34,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     defeitosList.appendChild(defeitoContainer);
   }
 
+  // Coleta de dados do formulário ao enviar
   document
     .getElementById("defeitosForm")
     .addEventListener("submit", function (event) {
@@ -54,24 +57,39 @@ document.addEventListener("DOMContentLoaded", (event) => {
         manualMaq[setor][maquina] = {};
       }
 
-      if (!manualMaq[setor][maquina]["Defeitos"]) {
-        manualMaq[setor][maquina]["Defeitos"] = [];
-      }
-
+      // Criando Objeto para enviar para o backEnd
       for (let i = 0; i <= contadorDefeitos; i++) {
         if (i != 0) {
           const defeitoNome = formData.get(`defeitoNome-${i}`);
           const solucoesNome = formData.get(`solucoesNome-${i}`);
-          manualMaq[setor][maquina]["Defeitos"].push({
-            [defeitoNome]: solucoesNome,
-          });
+          manualMaq[setor][maquina][defeitoNome] = solucoesNome.split(",")
         }
       }
+      manualMaq[setor][maquina]["Items a Verificar"] = checklist.split(",");
 
-      manualMaq[setor][maquina]["Items a Verificar"] = checklist;
+      // Envio de dados
+      fetch("/enviar-cadastro", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(manualMaq),
+      }).then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok " + response.statusText)
+        }
+        return response.json()
+      }).then((data) => {
+        console.log(data);
+        alert("Formulário enviado com sucesso!")
 
-      console.log(manualMaq);
+        // window.location.href = "/rota..."
+      }).catch((error) => {
+        console.error("Error:", error)
+      })
+
     });
 
   window.adicionarDefeito = adicionarDefeito;
+  adicionarDefeito()
 });

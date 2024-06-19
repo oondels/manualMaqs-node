@@ -59,6 +59,7 @@ app.post("/enviar-cadastro", (req, res) => {
       await sequelize.authenticate();
       console.log("Conexão com o Banco de Dados estabelecida com Sucesso!");
 
+      // Pegar id do setor selecionado
       const fidSetorId = async (nome) => {
         const setor = await Setor.findOne({ where: { nome } })
         return setor ? setor.id : null;
@@ -98,6 +99,7 @@ app.post("/enviar-cadastro", (req, res) => {
       console.error("Erro ao cadastrar os dados:", error);
     }
   };
+  
   cadastroMaq()
 
   res.json(newManual);
