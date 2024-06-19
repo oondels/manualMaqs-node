@@ -5,7 +5,7 @@ const Maquina = sequelize.define("Maquina", {
   nome: {
     type: DataTypes.STRING,
     allownull: false,
-    unique: true,
+    unique: false,
   },
 });
 
