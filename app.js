@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const sequelize = require("./sequelize");
 const { Setor, Maquina, Categoria, Problema } = require("./models");
+const body = require("body-parser")
 
 const app = express();
 
@@ -42,6 +43,10 @@ app.get("/manualmaquinas", async (req, res) => {
 app.get("/cadastro-maquinas", (req, res) => {
   res.render("cadastro_maquinas");
 });
+
+app.post("/enviar-cadastro", (req, res) => {
+  
+})
 
 app.get("/login", (req, res) => {
   res.render("login");
