@@ -75,7 +75,7 @@ async function manualMaqs() {
               const maquinaElement = document.createElement("div");
               maquinaElement.classList.add("maquinas-list");
 
-              maquinaElement.innerHTML = `<h2 class="toggle-button">${maquina.nome}</h2>`;
+              maquinaElement.innerHTML = `<h3 class="toggle-button">${maquina.nome}</h3>`;
 
               const categoriasElement = document.createElement("div");
               categoriasElement.classList.add("categorias-list");
@@ -84,7 +84,7 @@ async function manualMaqs() {
                 maquina.Categoria.forEach((categoria) => {
                   const categoriaElement = document.createElement("div");
                   categoriaElement.classList.add("categoria");
-                  categoriaElement.innerHTML = `<h3 class="toggle-button">${categoria.nome}</h3>`;
+                  categoriaElement.innerHTML = `<h5 class="toggle-button">${categoria.nome}</h5>`;
 
                   if (categoria.Problemas && categoria.Problemas.length > 0) {
                     const problemasList = document.createElement("ul");
@@ -137,7 +137,21 @@ async function manualMaqs() {
       toggleButtons.forEach((button) => {
         button.addEventListener("click", function () {
           const content = this.nextElementSibling;
-          content.classList.toggle("hidden");
+
+          if (content.classList.contains("hidden")) {
+            content.classList.remove("hidden");
+            content.style.display = "block";
+            // Forçar reflow para garantir que a transição seja aplicada
+            void content.offsetWidth;
+            content.classList.add("show");
+          } else {
+            content.classList.remove("show");
+            content.classList.add("hidden");
+            // Atraso para garantir que a transição ocorra antes de ocultar
+            setTimeout(() => {
+              content.style.display = "none";
+            }, 500); // Deve ser o mesmo valor da transição (0.5s)
+          }
         });
       });
     }
