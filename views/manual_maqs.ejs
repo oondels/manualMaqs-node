@@ -1,43 +1,53 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Manual de Máquinas</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css" rel="stylesheet" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" type="text/css" href="/css/style.css" />
     <script src="/js/main.js"></script>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <div class="wrapper">
-            <div class="title">
-                <h1>Manual de Máquinas</h1>
-            </div>
-
-            <div class="selecoes">
-                <div class="lista-selecao">
-                    <label for="opcoes-setores">Selecione um Setor</label>
-                    <select name="opcoes-setores" id="opcoes-setores">
-                        <option value=""></option>
-                    </select>
-                </div>
-
-                <div class="lista-selecao">
-                    <label for="opcoes-maquinas">Selecione uma Máquina</label>
-                    <select name="opcoes-maquinas" id="opcoes-maquinas">
-                        <option value=""></option>
-                    </select>
-                </div>
-            </div>
-
-            <main>
-                <div class="results">
-                </div>
-            </main>
+      <div class="wrapper">
+        <div class="title">
+          <h1>TPM - Manual de Máquinas</h1>
         </div>
+
+        <div class="selecoes">
+          <div class="lista-selecao select">
+            <label for="opcoes-setores">Selecione um Setor</label>
+            <select
+              class="js-example-basic-single"
+              name="opcoes-setores"
+              id="opcoes-setores"
+            >
+              <option value=""></option>
+            </select>
+          </div>
+
+          <div class="lista-selecao select">
+            <label for="opcoes-maquinas">Selecione uma Máquina</label>
+            <select
+              class="js-example-basic-single"
+              name="opcoes-maquinas"
+              id="opcoes-maquinas"
+            >
+              <option value=""></option>
+            </select>
+          </div>
+        </div>
+
+        <main>
+          <div class="results"></div>
+        </main>
+      </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script> 
-</body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
+  </body>
 </html>
