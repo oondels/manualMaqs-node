@@ -235,6 +235,25 @@ h1 {
   opacity: 1;
 }
 
+.container-problema {
+  position: relative;
+  padding-right: 50px;
+  border-bottom: 1px solid #ddd;
+}
+
+.container-problema li {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.container-problema img {
+  position: absolute;
+  right: 20px;
+  width: 35px;
+}
+
 .form-group {
   margin-bottom: 15px;
 }
