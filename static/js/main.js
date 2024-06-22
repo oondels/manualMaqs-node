@@ -144,7 +144,9 @@ async function manualMaqs() {
             // Forçar reflow para garantir que a transição seja aplicada
             void content.offsetWidth;
             content.classList.add("show");
+            button.classList.add("active");
           } else {
+            button.classList.remove("active");
             content.classList.remove("show");
             content.classList.add("hidden");
             // Atraso para garantir que a transição ocorra antes de ocultar
