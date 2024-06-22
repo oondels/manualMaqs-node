@@ -91,10 +91,13 @@ async function manualMaqs() {
                     problemasList.classList.add("hidden");
                     problemasList.classList.add("problemas-list");
                     categoria.Problemas.forEach((problema) => {
+                      const conteinerProblema = document.createElement("div");
+                      conteinerProblema.classList.add("container-problema");
                       const problemaElement = document.createElement("li");
                       problemaElement.classList.add("problema-item");
                       problemaElement.textContent = problema.descricao;
-                      problemasList.appendChild(problemaElement);
+                      conteinerProblema.appendChild(problemaElement);
+                      problemasList.appendChild(conteinerProblema);
                     });
                     categoriaElement.appendChild(problemasList);
                   } else {
@@ -129,6 +132,25 @@ async function manualMaqs() {
         resultadosContainer.appendChild(noSetores);
       }
       toggleButtons();
+
+      // Adicionar icone na lista de soluções
+      const iconProblema = () => {
+        const defeitos = document.querySelectorAll(".problema-item");
+
+        defeitos.forEach((defeito) => {
+          const contentItem = defeito.innerText;
+          if (contentItem.includes("Mecânico")) {
+            const icon = document.createElement("img");
+            icon.src = "/img/mecanico-icon.png";
+            defeito.appendChild(icon);
+          } else if (contentItem.includes("Operacional")) {
+            const icon = document.createElement("img");
+            icon.src = "/img/operador-icon.png";
+            defeito.appendChild(icon);
+          }
+        });
+      };
+      iconProblema();
     }
 
     function toggleButtons() {
