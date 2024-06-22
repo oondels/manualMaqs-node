@@ -24,11 +24,18 @@ document.addEventListener("DOMContentLoaded", (event) => {
     solucoesLabel.textContent = `Soluções para Defeito ${contadorDefeitos}:`;
     defeitoContainer.appendChild(solucoesLabel);
 
-    const solucoesInput = document.createElement("input");
-    solucoesInput.type = "text";
+    const solucoesArea = document.createElement("div");
+    solucoesArea.classList.add("textGuide");
+    const messageGuide = document.createElement("div");
+    messageGuide.innerHTML = "Insira os itens separados por vírgula.";
+    messageGuide.classList.add("tooltip");
+    const solucoesInput = document.createElement("textarea");
+    solucoesArea.appendChild(solucoesInput);
+    solucoesArea.appendChild(messageGuide);
+
     solucoesInput.name = `solucoesNome-${contadorDefeitos}`;
     solucoesInput.placeholder = "Soluções";
-    defeitoContainer.appendChild(solucoesInput);
+    defeitoContainer.appendChild(solucoesArea);
 
     const defeitosList = document.getElementById("defeitosList");
     defeitosList.appendChild(defeitoContainer);
@@ -62,7 +69,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
         if (i != 0) {
           const defeitoNome = formData.get(`defeitoNome-${i}`);
           const solucoesNome = formData.get(`solucoesNome-${i}`);
-          manualMaq[setor][maquina][defeitoNome] = solucoesNome.split(",")
+          manualMaq[setor][maquina][defeitoNome] = solucoesNome.split(",");
         }
       }
       manualMaq[setor][maquina]["Items a Verificar"] = checklist.split(",");
@@ -71,25 +78,29 @@ document.addEventListener("DOMContentLoaded", (event) => {
       fetch("/enviar-cadastro", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(manualMaq),
-      }).then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok " + response.statusText)
-        }
-        return response.json()
-      }).then((data) => {
-        console.log(data);
-        alert("Formulário enviado com sucesso!")
-
-        // window.location.href = "/rota..."
-      }).catch((error) => {
-        console.error("Error:", error)
       })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(
+              "Network response was not ok " + response.statusText
+            );
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log(data);
+          alert("Formulário enviado com sucesso!");
 
+          // window.location.href = "/rota..."
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
     });
 
   window.adicionarDefeito = adicionarDefeito;
-  adicionarDefeito()
+  adicionarDefeito();
 });
