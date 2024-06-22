@@ -1,5 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
 
 * {
   padding: 0;
@@ -26,15 +25,16 @@ html {
   display: flex;
   align-items: center;
   font-family: "Poppins", sans-serif;
-  background-color: #f6f6f9;
+  background-color: #e6f0fa; /* Fundo azul claro */
   padding: 20px;
-  color: #363949;
+  color: #333; /* Cor do texto */
 }
 
 .container {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
 }
 
 .wrapper {
@@ -42,21 +42,44 @@ html {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  width: auto;
+  width: 90%;
+  max-width: 1200px;
   padding: 30px;
-  box-shadow: 0 2rem 3rem rgba(0, 0, 0, 0.2);
-  border-radius: 40px;
+  background-color: #ffffff;
+  box-shadow: 0 2rem 3rem rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+}
+
+.title {
+  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.title h1 {
+  font-size: 35px;
+  color: #0056b3;
+  margin-top: 0;
+}
+
+.title img {
+  width: 150px;
+  padding-right: 20px;
 }
 
 .selecoes {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
 }
 
 .select {
-  padding: 10px;
+  flex: 1;
+  margin: 0 10px;
 }
 
 .select label {
@@ -64,22 +87,35 @@ html {
   text-align: center;
 }
 
-.lista-selecao {
+.listas {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  width: 100%;
+}
+
+.adicionar-maquina {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.adicionar-maquina p {
+  margin-bottom: 10px;
+  color: #007bff;
 }
 
 main {
-  margin-top: 20px;
+  width: 100%;
 }
 
-main h1 {
+h1 {
   text-align: center;
+  margin-bottom: 20px;
+  color: #0056b3;
 }
 
 #opcoes-setores,
 #opcoes-maquinas {
-  width: 300px;
+  width: 100%;
 }
 
 .select2-container {
@@ -89,12 +125,15 @@ main h1 {
 
 .select2-container .select2-selection--single {
   height: auto !important;
-  padding: 8px;
-  width: 300px;
+  padding: 8px !important;
+  border: 1px solid #0056b3;
+  border-radius: 8px !important;
+  color: #0056b3;
 }
 
 .select2-container .select2-selection__arrow {
-  right: 10px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
 }
 
 .select2-container .select2-search input {
@@ -107,11 +146,13 @@ main h1 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
+  width: 100%;
 }
 
 .setores-list h1 {
   margin-bottom: 20px;
+  font-size: 30px;
+  color: #0056b3;
 }
 
 .maquinas-list {
@@ -120,31 +161,31 @@ main h1 {
   border: none;
   text-align: left;
   outline: none;
-  font-size: 15px;
-  text-align: center;
-  min-width: 700px;
-  border-top: 1px solid #ddd;
-  border-right: 1px solid #ddd;
-  border-left: 1px solid #ddd;
-}
-
-.maquinas-list h3 {
+  font-size: 18px;
   padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  transition: box-shadow 0.3s ease;
+  border-bottom: rgba(0, 0, 0, 0.1) 1px solid;
 }
 
 .maquinas-list:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .toggle-button {
   cursor: pointer;
-  color: black;
-  font-weight: 400;
+  color: #333;
+  font-weight: 500;
   font-size: 20px;
+  margin-bottom: 10px;
 }
 
 .toggle-button:hover {
+  color: #1f75fe;
+}
+
+.toggle-button.active {
   color: #1f75fe;
 }
 
@@ -153,39 +194,34 @@ main h1 {
 }
 
 .categorias-list {
-  padding-bottom: 15px;
+  padding: 10px;
   overflow: hidden;
   background-color: #f1f1f1;
   max-height: 0;
   opacity: 0;
-  transition: max-height 0.5s ease, opacity 0.5s ease;
+  transition: max-height 0.7s ease, opacity 0.5s ease;
 }
 
 .categorias-list.show {
   max-height: 50000px;
   opacity: 1;
-  border: 1px solid #ddd;
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
 }
 
 .categoria ul {
-  padding: 5px;
+  padding: 10px;
   list-style-type: none;
-  background-color: #f5f5f5;
+  background-color: #fff;
   border: 1px solid #ddd;
+  border-radius: 8px;
 }
 
 .categoria ul li {
-  padding: 5px;
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
 }
 
-.categorias-list h5 {
-  padding: 5px;
-}
-
-.categorias-list h5:hover {
-  color: #1f75fe;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+.categoria ul li:last-child {
+  border-bottom: none;
 }
 
 .problemas-list {
@@ -195,6 +231,116 @@ main h1 {
 }
 
 .problemas-list.show {
-  max-height: 1000px;
+  max-height: 50000px;
   opacity: 1;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  color: #007bff;
+}
+
+input[type="text"],
+textarea,
+datalist {
+  width: 100%;
+  padding: 8px;
+  /* margin: 5px 0 10px 0; */
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-sizing: border-box;
+  font-size: 15px;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.btn-adicionar {
+  background-color: #28a745;
+  margin-bottom: 15px;
+}
+
+.btn-enviar {
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+}
+
+textarea {
+  width: calc(100% - 18px);
+  height: 100px;
+  resize: none;
+}
+
+.dados-maquina,
+.selecao-defeito-checklist {
+  margin-bottom: 20px;
+}
+
+.selecao {
+  margin-bottom: 10px;
+}
+
+.textGuide {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.tooltip {
+  visibility: hidden;
+  width: 220px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -110px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.textGuide:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  margin: 5px 0 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-sizing: border-box;
+  font-size: 15px;
 }
