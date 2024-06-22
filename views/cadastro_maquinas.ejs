@@ -1,49 +1,78 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cadastro de Máquinas</title>
-    <style>
-        .defeito-container {
-          margin-bottom: 20px;
-          border: 1px solid #ccc;
-          padding: 10px;
-          border-radius: 10px;
-        }
-        .defeito-container input {
-          display: block;
-          margin-bottom: 10px;
-        }
-    </style>
-</head>
-<body>
-    <form action="/enviar-cadastro" method="POST" id="defeitosForm">
-        <label for="setor">Escolha um setor</label>
-        <input list="setores" name="setor" id="input-setor">
-        <datalist id="setores">
-          <option value="Montagem">
-          <option value="Costura">
-          <option value="Apoio">
-          <option value="Corte Automático">
-          <option value="Serigrafia">
-          <option value="Lavagem">
-          <option value="Pré Solado">
-        </datalist>
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="wrapper">
+        <div class="cadastro">
+          <h1>TPM - Cadastro de Máquinas</h1>
+          <form action="/enviar-cadastro" method="POST" id="defeitosForm">
+            <div class="dados-maquina">
+              <div class="selecao-setores selecao">
+                <label for="setor">Escolha um setor</label>
+                <input
+                  list="setores"
+                  name="setor"
+                  id="input-setor"
+                  placeholder="Setor"
+                />
+                <datalist id="setores">
+                  <option value="Montagem"></option>
+                  <option value="Costura"></option>
+                  <option value="Apoio"></option>
+                  <option value="Corte Automático"></option>
+                  <option value="Serigrafia"></option>
+                  <option value="Lavagem"></option>
+                  <option value="Pré Solado"></option>
+                  <option value="Bordado"></option>
+                </datalist>
+              </div>
+              <div class="maquina selecao">
+                <label for="maquina">Nome da Máquina</label>
+                <input
+                  type="text"
+                  name="maquina"
+                  id="input-maquina"
+                  placeholder="Nome da Máquina"
+                />
+              </div>
+            </div>
 
-        <label for="maquina">Nome da Máquina</label>
-        <input type="text" name="maquina" id="input-maquina">
+            <div class="selecao-defeito-checklist">
+              <div class="defeitos">
+                <div id="defeitosList"></div>
+                <button
+                  type="button"
+                  class="btn-adicionar"
+                  onclick="adicionarDefeito()"
+                >
+                  + Adicionar Defeito
+                </button>
+              </div>
+              <div class="textGuide">
+                <label for="checklist">Checklist</label>
+                <textarea
+                  name="checklist"
+                  id="inputChecklist"
+                  placeholder="Itens para Verificar"
+                ></textarea>
+                <div class="tooltip">
+                  Insira os itens da checklist separados por vírgula.
+                </div>
+              </div>
+            </div>
 
-        <div id="defeitosList">
+            <button type="submit" class="btn-enviar">Enviar</button>
+          </form>
         </div>
-        <button type="button" onclick="adicionarDefeito()">+ Adicionar Defeito</button>
 
-        <label for="checklist">Checklist</label>
-        <textarea name="checklist" id="inputChecklist"></textarea>
-
-        <input type="submit">
-    </form>
-
-    <script src="/js/manualMaq.js"></script>
-</body>
+        <script src="/js/manualMaq.js"></script>
+      </div>
+    </div>
+  </body>
 </html>
