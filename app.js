@@ -3,6 +3,7 @@ const path = require("path");
 const sequelize = require("./sequelize");
 const { Setor, Maquina, Categoria, Problema } = require("./models");
 const body = require("body-parser");
+const bcrypt = require("bcrypt");
 
 const app = express();
 
@@ -12,6 +13,22 @@ app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "static")));
 app.use(body.urlencoded({ extended: true }));
 app.use(body.json());
+
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log("Conexão com Banco de dados estabelecida com sucesso!");
+
+    app.listen(3000, () => {
+      console.log("Servidor rodando na porta 3000.");
+    });
+  })
+  .catch((erro) => {
+    console.error(
+      "Não foi possivel estabelecer conexão com banco de dados:",
+      erro
+    );
+  });
 
 app.get("/tables", async (req, res) => {
   const [results] = await sequelize.query(
@@ -56,55 +73,61 @@ app.post("/enviar-cadastro", (req, res) => {
 
   const cadastroMaq = async () => {
     try {
-      await sequelize.authenticate();
-      console.log("Conexão com o Banco de Dados estabelecida com Sucesso!");
-
       // Pegar id do setor selecionado
       const fidSetorId = async (nome) => {
-        const setor = await Setor.findOne({ where: { nome } })
+        const setor = await Setor.findOne({ where: { nome } });
         return setor ? setor.id : null;
-      }
+      };
 
       for (setorNome in newManual) {
-        const setorId = await fidSetorId(setorNome)
-        console.log(setorId)
+        const setorId = await fidSetorId(setorNome);
 
-        const maquinas = newManual[setorNome]
+        const maquinas = newManual[setorNome];
         for (maquinaNome in maquinas) {
           const maquina = await Maquina.create({
             nome: maquinaNome,
-            setorId: setorId
-          })
+            setorId: setorId,
+          });
 
-          const categorias = maquinas[maquinaNome]
+          const categorias = maquinas[maquinaNome];
           for (const categoriaNome in categorias) {
             const categoria = await Categoria.create({
               nome: categoriaNome,
-              maquinaId: maquina.id
-            })
+              maquinaId: maquina.id,
+            });
 
-            const problemas = categorias[categoriaNome]
+            const problemas = categorias[categoriaNome];
             for (const problemaNome of problemas) {
               await Problema.create({
                 descricao: problemaNome,
-                categoriaId: categoria.id
-              })
+                categoriaId: categoria.id,
+              });
             }
           }
         }
       }
 
-      console.log("Dados adicionados com sucesso!")
+      console.log("Dados adicionados com sucesso!");
     } catch (error) {
       console.error("Erro ao cadastrar os dados:", error);
     }
   };
-  
-  cadastroMaq()
+
+  cadastroMaq();
 
   res.json(newManual);
 });
 
-app.listen(3000, () => {
-  console.log("Servidor rodando na porta 3000.");
+app.get("/login", (req, res) => {
+  res.render("login");
+});
+
+app.post("/login", (req, res) => {
+  const user = req.query.user;
+  const senha = req.query.senha;
+
+  if (user && senha) {
+    console.log(user);
+    console.log(senha);
+  }
 });
