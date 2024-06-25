@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   function adicionarDefeito() {
     contadorDefeitos++;
 
-    // Configuração da adição de novos forumlários ao clique do usuário
+    // Configuração da adição de novos formulários ao clique do usuário
 
     const defeitoContainer = document.createElement("div");
     defeitoContainer.className = "defeito-container";
@@ -49,30 +49,59 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
       const formData = new FormData(event.target);
 
-      let setor = formData.get("setor");
+      let setor = formData.getAll("setores");
+      if (setor.length <= 0) {
+        alert("Selecione pelo menos um setor!");
+        return;
+      }
+
       let maquina = formData.get("maquina");
+      if (!maquina && maquina.trim().length === 0) {
+        alert("Coloque um nome para a máquina.");
+        return;
+      }
+
+      const defeitoNome = formData.get(`defeitoNome-1`);
+      if (!defeitoNome && defeitoNome.trim().length === 0) {
+        alert("Adicione pelo menos um defeito para a máquina");
+        return;
+      }
+
+      const solucoesNome = formData.get(`solucoesNome-1`);
+      if (!solucoesNome && solucoesNome.trim().length === 0) {
+        alert("Adicione pelo menos uma solução para os defeitos da máquina");
+        return;
+      }
 
       const checklist = formData.get("checklist");
+      if (!checklist && checklist.trim().length === 0) {
+        alert("Adicione os itens para verificação do Checklist da máquina");
+        return;
+      }
 
       let manualMaq = {};
 
-      if (!manualMaq[setor]) {
-        manualMaq[setor] = {};
-      }
-
-      if (!manualMaq[setor][maquina]) {
-        manualMaq[setor][maquina] = {};
-      }
-
-      // Criando Objeto para enviar para o backEnd
-      for (let i = 0; i <= contadorDefeitos; i++) {
-        if (i != 0) {
-          const defeitoNome = formData.get(`defeitoNome-${i}`);
-          const solucoesNome = formData.get(`solucoesNome-${i}`);
-          manualMaq[setor][maquina][defeitoNome] = solucoesNome.split(",");
+      setor.forEach((setorNome) => {
+        if (!manualMaq[setorNome]) {
+          manualMaq[setorNome] = {};
         }
-      }
-      manualMaq[setor][maquina]["Items a Verificar"] = checklist.split(",");
+
+        if (!manualMaq[setorNome][maquina]) {
+          manualMaq[setorNome][maquina] = {};
+        }
+
+        // Criando Objeto para enviar para o backEnd
+        for (let i = 0; i <= contadorDefeitos; i++) {
+          if (i != 0) {
+            const defeitoNome = formData.get(`defeitoNome-${i}`);
+            const solucoesNome = formData.get(`solucoesNome-${i}`);
+            manualMaq[setorNome][maquina][defeitoNome] =
+              solucoesNome.split(",");
+          }
+        }
+        manualMaq[setorNome][maquina]["Items a Verificar"] =
+          checklist.split(",");
+      });
 
       // Envio de dados
       fetch("/enviar-cadastro", {
@@ -91,10 +120,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
           return response.json();
         })
         .then((data) => {
-          console.log(data);
           alert("Formulário enviado com sucesso!");
 
-          // window.location.href = "/rota..."
+          window.location.href = "/cadastro-maquinas";
         })
         .catch((error) => {
           console.error("Error:", error);
