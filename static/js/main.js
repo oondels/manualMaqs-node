@@ -139,14 +139,23 @@ async function manualMaqs() {
 
         defeitos.forEach((defeito) => {
           const contentItem = defeito.innerText;
+          defeito.classList.add("textGuide");
           if (contentItem.includes("Mecânico")) {
             const icon = document.createElement("img");
+            const messageGuide = document.createElement("div");
+            messageGuide.innerHTML = "Defeito Mecânico";
+            messageGuide.classList.add("tooltip");
             icon.src = "/img/mecanico-icon.png";
             defeito.appendChild(icon);
+            defeito.appendChild(messageGuide);
           } else if (contentItem.includes("Operacional")) {
             const icon = document.createElement("img");
+            const messageGuide = document.createElement("div");
+            messageGuide.innerHTML = "Defeito Operacional";
+            messageGuide.classList.add("tooltip");
             icon.src = "/img/operador-icon.png";
             defeito.appendChild(icon);
+            defeito.appendChild(messageGuide);
           }
         });
       };
