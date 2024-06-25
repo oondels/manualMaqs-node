@@ -1529,7 +1529,7 @@ Defeito 13 – Não corta a linha de Baixo
 11- Ascariação na tesoura (Mecânico)
 
 Maquina de Costura
-Defeito 11 – Não pega linha no início da costura
+Defeito 14 – Não pega linha no início da costura
 1- Linha da bobina muito apertada (491) (Operacional)
 2- Bobina trancando (Operacional)
 3- Linha da bobina muito solta (461-463-951) (Operacional)
