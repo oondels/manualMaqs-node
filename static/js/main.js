@@ -21,6 +21,11 @@ async function manualMaqs() {
     $("#opcoes-maquinas").select2({
       placeholder: "Pesquisar Máquina",
       allowClear: true,
+      language: {
+        noResults: function () {
+          return "Selecione um Setor primeiro!";
+        },
+      },
     });
 
     // Função para atualizar a lista de máquinas com base no setor selecionado
@@ -143,7 +148,7 @@ async function manualMaqs() {
           if (contentItem.includes("Mecânico")) {
             const icon = document.createElement("img");
             const messageGuide = document.createElement("div");
-            messageGuide.innerHTML = "Defeito Mecânico";
+            messageGuide.innerHTML = "Mecânico";
             messageGuide.classList.add("tooltip");
             icon.src = "/img/mecanico-icon.png";
             defeito.appendChild(icon);
@@ -151,7 +156,7 @@ async function manualMaqs() {
           } else if (contentItem.includes("Operacional")) {
             const icon = document.createElement("img");
             const messageGuide = document.createElement("div");
-            messageGuide.innerHTML = "Defeito Operacional";
+            messageGuide.innerHTML = "Operacional";
             messageGuide.classList.add("tooltip");
             icon.src = "/img/operador-icon.png";
             defeito.appendChild(icon);
