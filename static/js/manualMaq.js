@@ -96,11 +96,11 @@ document.addEventListener("DOMContentLoaded", (event) => {
             const defeitoNome = formData.get(`defeitoNome-${i}`);
             const solucoesNome = formData.get(`solucoesNome-${i}`);
             manualMaq[setorNome][maquina][defeitoNome] =
-              solucoesNome.split(",");
+              solucoesNome.split(/[\n]+/);
           }
         }
         manualMaq[setorNome][maquina]["Items a Verificar"] =
-          checklist.split(",");
+          checklist.split(/[\n]+/);
       });
 
       // Envio de dados
