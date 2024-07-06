@@ -1,4 +1,4 @@
-const { sequelize, Setor, Maquina, Categoria, Problema } = require("./models");
+const { sequelize, User } = require("./models");
 
 async function initializeDB() {
   try {

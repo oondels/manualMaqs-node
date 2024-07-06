@@ -44,12 +44,16 @@
               </select>
             </div>
           </div>
-          <div class="adicionar-maquina">
-            <p>Deseja adicionar alguma máquina?</p>
-            <a href="cadastro-maquinas"
-              ><button class="btn-adicionar">Adicionar</button></a
-            >
-          </div>
+          
+          <% if (user.admin) { %>
+            <div class="adicionar-maquina">
+              <p>Deseja adicionar alguma máquina?</p>
+              <a href="cadastro-maquinas"
+                ><button class="btn-adicionar">Adicionar</button></a
+              >
+            </div>
+          <% } %>
+          
         </div>
 
         <main>
