@@ -5,9 +5,7 @@ const { Setor, Maquina, Categoria, Problema } = require("./models");
 const User = require("./models/user");
 const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const cookieParser = require("cookie-parser");
-const authLogin = require("./auth/authLogin");
+const session = require("express-session");
 
 const app = express();
 
@@ -17,7 +15,23 @@ app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "static")));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(cookieParser());
+
+app.use(
+  session({
+    secret: "secretKey",
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false },
+  })
+);
+
+const authLogin = (req, res, next) => {
+  if (req.session.userId) {
+    next();
+  } else {
+    res.status(401).redirect("/login");
+  }
+};
 
 sequelize
   .authenticate()
@@ -42,7 +56,7 @@ app.get("/tables", authLogin, async (req, res) => {
   res.json(results);
 });
 
-app.get("/api/manual_maqs", async (req, res) => {
+app.get("/api/manual_maqs", authLogin, async (req, res) => {
   try {
     const manualMaqs = await Setor.findAll({
       include: [
@@ -84,8 +98,8 @@ app.post("/register-user", async (req, res) => {
   }
 });
 
-app.get("/login", authLogin, (req, res) => {
-  if (req.userId) {
+app.get("/login", (req, res) => {
+  if (req.session.userId) {
     return res.json({ error: "voce ja esta logado" });
   }
   res.render("login");
@@ -105,17 +119,9 @@ app.post("/login-token", async (req, res) => {
       return res.status(401).json({ error: "Senha Incorreta!" });
     }
 
-    const token = jwt.sign(
-      {
-        userId: user.id,
-        admin: user.admin,
-      },
-      "senhaDass",
-      {
-        expiresIn: "1h",
-      }
-    );
-    res.cookie("token", token, { httpOnly: true });
+    req.session.userId = user.id;
+    req.session.userAdmin = user.admin;
+
     res.redirect(`/manualmaquinas`);
   } catch (error) {
     console.error("Erro ao buscar Usuário:", error);
@@ -123,7 +129,7 @@ app.post("/login-token", async (req, res) => {
 });
 
 app.get("/manualmaquinas", authLogin, async (req, res) => {
-  const userId = req.userId;
+  const userId = req.session.userId;
   try {
     const user = await User.findByPk(userId);
     res.render("manual_maqs", { user });
@@ -133,7 +139,7 @@ app.get("/manualmaquinas", authLogin, async (req, res) => {
 });
 
 app.get("/cadastro-maquinas", authLogin, async (req, res) => {
-  const userId = req.userId;
+  const userId = req.session.userId;
 
   try {
     const user = await User.findByPk(userId);
@@ -147,7 +153,7 @@ app.get("/cadastro-maquinas", authLogin, async (req, res) => {
   }
 });
 
-app.post("/enviar-cadastro", (req, res) => {
+app.post("/enviar-cadastro", authLogin, (req, res) => {
   const newManual = req.body;
 
   const cadastroMaq = async () => {

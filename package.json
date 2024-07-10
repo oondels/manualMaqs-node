@@ -16,6 +16,7 @@
     "ejs": "^3.1.10",
     "elven": "^0.0.2",
     "express": "^4.19.2",
+    "express-session": "^1.18.0",
     "js-levenshtein": "^1.1.6",
     "jsonwebtoken": "^9.0.2",
     "leven": "^4.0.0",

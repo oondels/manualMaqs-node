@@ -425,3 +425,11 @@ input {
 .setores-checkboxes input {
   width: auto;
 }
+
+.operacional-mecanico {
+  margin-top: 10px;
+}
+
+.ativado {
+  background-color: #0004ff;
+}
