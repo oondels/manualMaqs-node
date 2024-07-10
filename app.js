@@ -100,7 +100,7 @@ app.post("/register-user", async (req, res) => {
 
 app.get("/login", (req, res) => {
   if (req.session.userId) {
-    return res.json({ error: "voce ja esta logado" });
+    return res.redirect("/manualmaquinas");
   }
   res.render("login");
 });
